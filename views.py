@@ -15,7 +15,7 @@ def course_list(request):
 def course_detail(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     questions = course.questions.prefetch_related('choices')
-    return render(request, 'onlinecourse/course_detail.html', {
+    return render(request, 'onlinecourse/course_details_bootstrap.html', {
         'course': course,
         'questions': questions,
     })
@@ -23,7 +23,7 @@ def course_detail(request, course_id):
 
 @require_POST
 @login_required
-def submit_exam(request, course_id):
+def exam(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     questions = list(course.questions.prefetch_related('choices'))
     if not questions:
@@ -56,12 +56,12 @@ def submit_exam(request, course_id):
         })
 
     submission = Submission.objects.create(course=course, user=request.user, answers=answers)
-    return redirect('onlinecourse:exam_result', submission_id=submission.pk)
+    return redirect('onlinecourse:show_exam_result', submission_id=submission.pk)
 
 
 @require_safe
 @login_required
-def exam_result(request, submission_id):
+def show_exam_result(request, submission_id):
     submission = get_object_or_404(
         Submission.objects.select_related('course'), pk=submission_id, user=request.user
     )

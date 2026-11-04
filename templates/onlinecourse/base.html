@@ -10,6 +10,7 @@
         fieldset label { display: block; margin: .35rem 0; }
         button { font: inherit; padding: .4rem .8rem; }
     </style>
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <nav aria-label="Main"><a href="{% url 'onlinecourse:course_list' %}">Course catalog</a></nav>

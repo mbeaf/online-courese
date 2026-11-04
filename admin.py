@@ -2,7 +2,19 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms.models import BaseInlineFormSet
 
-from .models import Choice, Course, Question, Submission
+from .models import Choice, Course, Lesson, Question, Submission
+
+
+class QuestionInline(admin.TabularInline):
+    model = Question
+    fields = ['text']
+    readonly_fields = ['text']
+    show_change_link = True
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request, obj=None):
+        return False
 
 
 class ChoiceFormSet(BaseInlineFormSet):
@@ -26,7 +38,15 @@ class ChoiceInline(admin.TabularInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
+    inlines = [QuestionInline]
     search_fields = ['title']
+
+
+@admin.register(Lesson)
+class LessonAdmin(admin.ModelAdmin):
+    list_display = ['title', 'course', 'position']
+    list_filter = ['course']
+    search_fields = ['title', 'course__title']
 
 
 @admin.register(Question)
