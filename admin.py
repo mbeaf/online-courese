@@ -7,8 +7,8 @@ from .models import Choice, Course, Lesson, Question, Submission
 
 class QuestionInline(admin.TabularInline):
     model = Question
-    fields = ['text']
-    readonly_fields = ['text']
+    fields = ['text', 'grade']
+    readonly_fields = ['text', 'grade']
     show_change_link = True
     can_delete = False
     extra = 0
@@ -52,14 +52,14 @@ class LessonAdmin(admin.ModelAdmin):
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
-    list_display = ['text', 'course']
+    list_display = ['text', 'course', 'grade']
     list_filter = ['course']
 
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'course', 'user', 'submitted_at']
-    readonly_fields = ['course', 'user', 'answers', 'submitted_at']
+    list_display = ['id', 'enrollment', 'submitted_at']
+    readonly_fields = ['enrollment', 'choices', 'answers', 'submitted_at']
 
     def has_add_permission(self, request):
         return False

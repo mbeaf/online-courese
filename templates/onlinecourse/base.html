@@ -13,7 +13,19 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-    <nav aria-label="Main"><a href="{% url 'onlinecourse:course_list' %}">Course catalog</a></nav>
+    <nav aria-label="Main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <a href="{% url 'onlinecourse:course_list' %}">Course catalog</a>
+        {% if user.is_authenticated %}
+        <span>Signed in as {{ user.get_username }}</span>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Sign out</button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}">Sign in</a>
+        <a href="{% url 'onlinecourse:register' %}">Create account</a>
+        {% endif %}
+    </nav>
     <main>{% block content %}{% endblock %}</main>
 </body>
 </html>
