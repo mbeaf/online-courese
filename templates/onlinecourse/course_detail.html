@@ -1,0 +1,28 @@
+{% extends "onlinecourse/base.html" %}
+{% block title %}{{ course.title }}{% endblock %}
+{% block content %}
+<h1>{{ course.title }}</h1>
+{{ course.description|linebreaks }}
+<h2>Course exam</h2>
+{% if questions %}
+<p>Select all correct answers for each question. Each question is worth one point.</p>
+<form method="post" action="{% url 'onlinecourse:submit_exam' course.pk %}">
+    {% csrf_token %}
+    {% for question in questions %}
+    <fieldset>
+        <legend>{{ forloop.counter }}. {{ question.text }}</legend>
+        {% for choice in question.choices.all %}
+        <label><input type="checkbox" name="question_{{ question.pk }}" value="{{ choice.pk }}"> {{ choice.text }}</label>
+        {% endfor %}
+    </fieldset>
+    {% endfor %}
+    {% if user.is_authenticated %}
+    <button type="submit">Submit exam</button>
+    {% else %}
+    <p><a href="{% url 'login' %}?next={{ request.path|urlencode }}">Sign in</a> to submit the exam.</p>
+    {% endif %}
+</form>
+{% else %}
+<p>This course has no exam yet.</p>
+{% endif %}
+{% endblock %}

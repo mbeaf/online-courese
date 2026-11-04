@@ -1,0 +1,16 @@
+{% extends "onlinecourse/base.html" %}
+{% block title %}Exam result | {{ submission.course.title }}{% endblock %}
+{% block content %}
+<h1>Exam result</h1>
+<p>{{ submission.course.title }}</p>
+<p><strong>Score: {{ score }} out of {{ total }}</strong></p>
+{% for answer in submission.answers %}
+<article>
+    <h2>{{ forloop.counter }}. {{ answer.question }}</h2>
+    <p>{% if answer.earned_point %}Correct{% else %}Incorrect{% endif %}</p>
+    <p>Your answers: {{ answer.selected|join:", "|default:"Unanswered" }}</p>
+    <p>Correct answers: {{ answer.correct|join:", " }}</p>
+</article>
+{% endfor %}
+<p><a href="{% url 'onlinecourse:course_detail' submission.course_id %}">Back to course</a></p>
+{% endblock %}

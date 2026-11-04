@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Online Courses{% endblock %}</title>
+    <style>
+        body { font: 1rem/1.5 system-ui, sans-serif; max-width: 48rem; margin: 2rem auto; padding: 0 1rem; }
+        fieldset, article { margin: 1rem 0; padding: 1rem; border: 1px solid #aaa; }
+        fieldset label { display: block; margin: .35rem 0; }
+        button { font: inherit; padding: .4rem .8rem; }
+    </style>
+</head>
+<body>
+    <nav aria-label="Main"><a href="{% url 'onlinecourse:course_list' %}">Course catalog</a></nav>
+    <main>{% block content %}{% endblock %}</main>
+</body>
+</html>
